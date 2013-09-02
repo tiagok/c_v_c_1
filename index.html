@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>Cyclic Vacuum Cannon</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #333;
+      }
+      #canvas {
+        
+      }
+    </style>
+  </head>
+  <body onload="new p.CyclicVacuumCannonApp;">
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript">
+      var c = createjs; 
+      var presstube = {};
+      var p = presstube;
+      
+      // console.log(c);
+      // console.log(p);
+      
+      p.CyclicVacuumCannonApp = function() {
+        var canvas = $('#canvas')[0];
+        var stage = new c.Stage(canvas);
+        var bgRect = new c.Shape;
+        var centeredContainer = new c.Container;
+        var placeholderDot = new c.Shape; 
+        
+        c.Ticker.setFPS(30);
+        c.Ticker.addListener(stage);
+        
+        stage.onTick = function(e) {
+          // console.log('stage tick here: ', e);    
+        }
+        
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          
+          bgRect.graphics.clear().beginFill("333").drawRect(0, 0, canvas.width, canvas.height);
+          
+          centeredContainer.x = canvas.width / 2;
+          centeredContainer.y = canvas.height / 2;
+        }
+        resize();
+        $(window).resize(resize);
+        
+        
+        
+        stage.onClick = function(e) {
+          console.log('stage click here!', e);
+        }
+        
+        stage.addChild(bgRect);
+        placeholderDot.graphics.beginFill("f00").drawCircle(0,0,30);
+        centeredContainer.addChild(placeholderDot);
+        stage.addChild(centeredContainer);
+      }; 
+
+      
+      
+      
+
+    
+    </script>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  </body>
+</html>
