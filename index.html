@@ -12,61 +12,72 @@
       }
     </style>
   </head>
-  <body onload="new p.CyclicVacuumCannonApp;">
+  <body onload="new pt.CyclicVacuumCannonApp;">
     <canvas id="canvas"></canvas>
     <script type="text/javascript" src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script type="text/javascript">
-      var c = createjs; 
-      var presstube = {};
-      var p = presstube;
+      var c = createjs,
+        presstube = {},
+        pt = presstube,
+        p;
       
-      // console.log(c);
-      // console.log(p);
-      
-      p.CyclicVacuumCannonApp = function() {
-        var canvas = $('#canvas')[0];
-        var stage = new c.Stage(canvas);
-        var bgRect = new c.Shape;
-        var centeredContainer = new c.Container;
-        var placeholderDot = new c.Shape; 
+      pt.CyclicVacuumCannonApp = function() {
         
-        c.Ticker.setFPS(30);
-        c.Ticker.addListener(stage);
-        
-        stage.onTick = function(e) {
-          // console.log('stage tick here: ', e);    
-        }
-        
+        var canvas = $('#canvas')[0],
+          stage = new c.Stage(canvas),
+          bgRect = new c.Shape,
+          centeredContainer = new c.Container,
+          placeholderDot = new c.Shape; 
+
         function resize() {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
-          
-          bgRect.graphics.clear().beginFill("333").drawRect(0, 0, canvas.width, canvas.height);
-          
+          bgRect.graphics.clear().beginFill("666").drawRect(0, 0, canvas.width, canvas.height);
           centeredContainer.x = canvas.width / 2;
           centeredContainer.y = canvas.height / 2;
         }
+        
         resize();
         $(window).resize(resize);
-        
-        
-        
-        stage.onClick = function(e) {
-          console.log('stage click here!', e);
-        }
-        
+        c.Ticker.setFPS(30);
+        c.Ticker.addListener(stage);
         stage.addChild(bgRect);
-        placeholderDot.graphics.beginFill("f00").drawCircle(0,0,30);
-        centeredContainer.addChild(placeholderDot);
+        // placeholderDot.graphics.beginFill("f00").drawCircle(0,0,30);
+        // centeredContainer.addChild(placeholderDot);
         stage.addChild(centeredContainer);
+        centeredContainer.addChild(new pt.Noun);
+
+        stage.onTick = function(e) {
+        }
+        stage.onClick = function(e) {
+        }
+        console.log(p);
+      };
+      
+      pt.Noun = function() {
+        this.initialize();
+      };
+      window.p = p;
+      p = pt.Noun.prototype = new c.Container;
+      p.Container_initialize = p.initialize;
+      pt.Noun.libraryAnimSpriteSheet = new c.SpriteSheet({"frames": [[2, 2, 60, 124, 0, -30, -7], [66, 2, 60, 124, 0, -30, -7], [130, 2, 60, 124, 0, -30, -7]], "animations": {"all": {"frames": [0, 1, 2]}}, "images": ["noum_lib_anim.png"]});
+      p.initialize = function() {
+        this.Container_initialize();
+        
+        var noun = this;
+        var libraryAnim = new c.BitmapAnimation(pt.Noun.libraryAnimSpriteSheet);
+        noun.addChild(libraryAnim);
+        // libraryAnim.play();
+        libraryAnim.gotoAndStop(Math.floor(Math.random() * libraryAnim.spriteSheet._frames.length));
+        console.log(libraryAnim.spriteSheet._numFrames);
+        console.log(libraryAnim.spriteSheet._frames.length);
       }; 
-
       
       
       
-
-    
+      
+      
     </script>
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>
